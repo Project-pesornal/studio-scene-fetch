@@ -1,5 +1,6 @@
 import { Phone, Mail, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const scrollToSection = (sectionId: string) => {
@@ -16,11 +17,11 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-2">
                 <Phone className="w-4 h-4" />
                 <span>+27 123 456 7890</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span>info@guardianangel.com</span>
               </div>
@@ -75,10 +76,12 @@ const Header = () => {
               </ul>
             </nav>
 
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               <Button variant="outline" size="sm">Login</Button>
               <Button size="sm">Sign Up</Button>
             </div>
+
+            <MobileMenu />
           </div>
         </div>
       </div>

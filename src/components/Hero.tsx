@@ -1,8 +1,10 @@
-import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import SearchBar, { SearchFilters } from "./SearchBar";
+import { useToast } from "@/hooks/use-toast";
 
 const Hero = () => {
+  const { toast } = useToast();
+  
   const genres = [
     { emoji: "🎬", name: "Action" },
     { emoji: "😂", name: "Comedy" },
@@ -10,6 +12,38 @@ const Hero = () => {
     { emoji: "👻", name: "Horror" },
     { emoji: "🚀", name: "Sci-Fi" },
   ];
+
+  const handleSearch = (query: string, filters: SearchFilters) => {
+    // Scroll to movies section when search is performed
+    const moviesSection = document.getElementById('movies');
+    if (moviesSection) {
+      moviesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    toast({
+      title: "Search Initiated",
+      description: `Searching for "${query}" in the movies section below.`,
+    });
+  };
+
+  const handleGenreClick = (genre: string) => {
+    const moviesSection = document.getElementById('movies');
+    if (moviesSection) {
+      moviesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    toast({
+      title: `${genre} Movies`,
+      description: `Showing ${genre} movies in the movies section.`,
+    });
+  };
+
+  const handleGetStarted = () => {
+    toast({
+      title: "Welcome to Guardian Angel Studios!",
+      description: "Sign up feature will be available soon. Thank you for your interest!",
+    });
+  };
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -37,22 +71,13 @@ const Hero = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="max-w-2xl mx-auto mb-12">
-          <div className="glass rounded-full p-4">
-            <div className="flex gap-4">
-              <Input 
-                placeholder="Search for movies, TV shows, actors..."
-                className="flex-1 bg-transparent border-none text-foreground placeholder:text-muted-foreground text-base py-3"
-              />
-              <Button size="lg" className="rounded-full px-6">
-                <Search className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
+        <div className="mb-12">
+          <SearchBar onSearch={handleSearch} />
         </div>
 
         <div className="mb-12">
           <Button 
+            onClick={handleGetStarted}
             size="lg" 
             className="px-8 py-6 text-lg rounded-full bg-primary hover:bg-primary/90 animate-pulse-glow"
           >
@@ -65,13 +90,14 @@ const Hero = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-8">Explore by Genre</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-5">
             {genres.map((genre, index) => (
-              <div 
+              <button
                 key={index}
-                className="glass glass-hover rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:scale-105"
+                onClick={() => handleGenreClick(genre.name)}
+                className="glass glass-hover rounded-2xl p-6 cursor-pointer transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <div className="text-3xl mb-3">{genre.emoji}</div>
                 <div className="font-medium">{genre.name}</div>
-              </div>
+              </button>
             ))}
           </div>
         </div>

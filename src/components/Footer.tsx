@@ -1,8 +1,14 @@
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import Newsletter from "./Newsletter";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
+  const handleLinkClick = (linkName: string) => {
+    // For demo purposes, we'll show a toast or alert
+    alert(`${linkName} page will be available soon!`);
+  };
+
   return (
     <footer className="bg-gradient-to-b from-background/90 to-background border-t border-glass-border mt-20">
       <div className="max-w-7xl mx-auto px-5 py-16">
@@ -23,19 +29,39 @@ const Footer = () => {
               Your premier destination for premium streaming content and innovative IT solutions.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); handleLinkClick('Facebook'); }}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); handleLinkClick('Twitter'); }}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); handleLinkClick('Instagram'); }}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); handleLinkClick('YouTube'); }}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Youtube className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a 
+                href="#" 
+                onClick={(e) => { e.preventDefault(); handleLinkClick('LinkedIn'); }}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
@@ -47,9 +73,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {['Home', 'About Us', 'Services', 'Movies', 'TV Shows', 'Pricing', 'Help Center'].map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                  <button 
+                    onClick={() => handleLinkClick(link)}
+                    className="text-muted-foreground hover:text-primary transition-colors text-left"
+                  >
                     {link}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -69,18 +98,21 @@ const Footer = () => {
                 'Digital Marketing'
               ].map((service) => (
                 <li key={service}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                  <button 
+                    onClick={() => handleLinkClick(service)}
+                    className="text-muted-foreground hover:text-primary transition-colors text-left"
+                  >
                     {service}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact Info & Newsletter */}
           <div>
             <h4 className="text-lg font-semibold text-foreground mb-6">Contact Us</h4>
-            <div className="space-y-4">
+            <div className="space-y-4 mb-6">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-1" />
                 <div>
@@ -93,7 +125,12 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-1" />
                 <div>
-                  <p className="text-muted-foreground">+27 123 456 7890</p>
+                  <button 
+                    onClick={() => window.open('tel:+27123456789')}
+                    className="text-muted-foreground hover:text-primary transition-colors text-left"
+                  >
+                    +27 123 456 7890
+                  </button>
                   <p className="text-sm text-muted-foreground">Mon-Fri 8AM-6PM</p>
                 </div>
               </div>
@@ -101,37 +138,57 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-primary mt-1" />
                 <div>
-                  <p className="text-muted-foreground">info@guardianangel.com</p>
-                  <p className="text-muted-foreground">support@guardianangel.com</p>
+                  <button 
+                    onClick={() => window.open('mailto:info@guardianangel.com')}
+                    className="text-muted-foreground hover:text-primary transition-colors text-left"
+                  >
+                    info@guardianangel.com
+                  </button>
+                  <button 
+                    onClick={() => window.open('mailto:support@guardianangel.com')}
+                    className="text-muted-foreground hover:text-primary transition-colors block text-left"
+                  >
+                    support@guardianangel.com
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Newsletter */}
-            <div className="glass rounded-xl p-5 mt-6">
-              <h5 className="font-semibold text-foreground mb-4">Stay Updated</h5>
-              <div className="flex gap-2">
-                <Input 
-                  type="email" 
-                  placeholder="Your email"
-                  className="flex-1 bg-transparent border-glass-border"
-                />
-                <Button size="sm">Subscribe</Button>
-              </div>
-            </div>
+            {/* Newsletter Component */}
+            <Newsletter />
           </div>
         </div>
 
         {/* Footer Bottom */}
         <div className="border-t border-glass-border pt-8 text-center">
           <p className="text-muted-foreground mb-4">
-            &copy; 2024 Guardian Angel Studios. All rights reserved.
+            &copy; {currentYear} Guardian Angel Studios. All rights reserved.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Cookie Policy</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">DMCA</a>
+            <button 
+              onClick={() => handleLinkClick('Privacy Policy')}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => handleLinkClick('Terms of Service')}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Terms of Service
+            </button>
+            <button 
+              onClick={() => handleLinkClick('Cookie Policy')}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Cookie Policy
+            </button>
+            <button 
+              onClick={() => handleLinkClick('DMCA')}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              DMCA
+            </button>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Play, Calendar, Eye, Clock } from "lucide-react";
+import { Play, Calendar, Eye, Clock, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { YouTubeVideo, useYouTubeMovies } from "@/services/youtubeApi";
 import { useToast } from "@/hooks/use-toast";
@@ -8,11 +8,13 @@ const Movies = () => {
   const [movies, setMovies] = useState<YouTubeVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [activeFilter, setActiveFilter] = useState<'trending' | 'byDate'>('trending');
   const { fetchMovies } = useYouTubeMovies();
   const { toast } = useToast();
 
   const loadMovies = async (type: 'trending' | 'byDate' = 'trending', params?: any) => {
     setLoading(true);
+    setActiveFilter(type);
     try {
       const movieData = await fetchMovies(type, params);
       setMovies(movieData);
@@ -41,6 +43,17 @@ const Movies = () => {
     loadMovies('byDate', { date });
   };
 
+  const handleMovieClick = (movie: YouTubeVideo) => {
+    toast({
+      title: `Playing: ${movie.title}`,
+      description: `Opening ${movie.title} by ${movie.channelTitle}`,
+    });
+  };
+
+  const handleRefresh = () => {
+    loadMovies(activeFilter, activeFilter === 'byDate' ? { date: selectedDate } : undefined);
+  };
+
   const formatViewCount = (count: string) => {
     if (!count) return '0';
     const num = parseInt(count.replace(/[^\d]/g, ''));
@@ -61,7 +74,7 @@ const Movies = () => {
             Discover the latest movies and trending content from YouTube
           </p>
           
-          {/* Date Filter */}
+          {/* Controls */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />
@@ -75,7 +88,7 @@ const Movies = () => {
             </div>
             <div className="flex gap-2">
               <Button 
-                variant="outline" 
+                variant={activeFilter === 'trending' ? 'default' : 'outline'}
                 size="sm" 
                 onClick={() => loadMovies('trending')}
                 className="glass glass-hover"
@@ -83,12 +96,21 @@ const Movies = () => {
                 Trending
               </Button>
               <Button 
-                variant="outline" 
+                variant={activeFilter === 'byDate' ? 'default' : 'outline'}
                 size="sm" 
                 onClick={() => loadMovies('byDate', { date: selectedDate })}
                 className="glass glass-hover"
               >
                 By Date
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleRefresh}
+                className="glass glass-hover"
+                disabled={loading}
+              >
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               </Button>
             </div>
           </div>
@@ -112,6 +134,7 @@ const Movies = () => {
               <div 
                 key={movie.id}
                 className="glass glass-hover rounded-xl overflow-hidden cursor-pointer group transform transition-all duration-300 hover:scale-105"
+                onClick={() => handleMovieClick(movie)}
               >
                 <div className="relative">
                   <img 
@@ -160,13 +183,32 @@ const Movies = () => {
 
         {!loading && movies.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">No movies found for the selected criteria.</p>
+            <p className="text-muted-foreground text-lg mb-4">No movies found for the selected criteria.</p>
             <Button 
               onClick={() => loadMovies('trending')} 
-              className="mt-4"
+              className="mr-4"
             >
               Load Trending Movies
             </Button>
+            <Button 
+              variant="outline"
+              onClick={handleRefresh}
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
+        )}
+
+        {/* Stats */}
+        {!loading && movies.length > 0 && (
+          <div className="text-center mt-12">
+            <div className="glass rounded-2xl p-6 inline-block">
+              <p className="text-muted-foreground">
+                Showing <span className="text-primary font-semibold">{movies.length}</span> movies
+                {activeFilter === 'trending' ? ' from trending content' : ` for ${selectedDate}`}
+              </p>
+            </div>
           </div>
         )}
       </div>
