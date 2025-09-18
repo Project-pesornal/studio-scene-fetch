@@ -12,7 +12,7 @@ export interface YouTubeVideo {
 
 export class YouTubeService {
   private static readonly BASE_URL = 'https://www.googleapis.com/youtube/v3';
-  private static readonly API_KEY = process.env.VITE_YOUTUBE_API_KEY || 'demo_key';
+  private static readonly API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY || 'demo_key';
 
   static async searchMovies(query: string = 'movie trailer', maxResults: number = 20): Promise<YouTubeVideo[]> {
     try {
