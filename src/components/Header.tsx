@@ -51,6 +51,7 @@ const Header = () => {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-foreground">Guardian Angel Studios</h1>
+                <p className="text-xs font-medium text-muted-foreground">WE LEAVE AN UNFORGETTABLE MARK</p>
                 <p className="text-xs text-primary">IT Services & Solutions</p>
               </div>
             </div>
