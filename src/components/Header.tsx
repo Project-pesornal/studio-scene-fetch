@@ -1,6 +1,7 @@
 import { Phone, Mail, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
+import guardianAngelLogo from "@/assets/guardian-angel-logo.jpg";
 
 const Header = () => {
   const scrollToSection = (sectionId: string) => {
@@ -46,14 +47,11 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection('home')}>
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold">
-                GA
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-foreground">Guardian Angel Studios</h1>
-                <p className="text-xs font-medium text-muted-foreground">WE LEAVE AN UNFORGETTABLE MARK</p>
-                <p className="text-xs text-primary">IT Services & Solutions</p>
-              </div>
+              <img 
+                src={guardianAngelLogo} 
+                alt="Guardian Angel Studios Logo" 
+                className="w-16 h-12 object-contain"
+              />
             </div>
 
             <nav className="hidden md:block">
